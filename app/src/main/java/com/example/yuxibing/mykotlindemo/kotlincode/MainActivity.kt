@@ -10,7 +10,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        tt.setText("我是你大爷")
         val array = ArrayList<Int>()
         for ((index, value) in array.withIndex()) {
             println("the element at $index is $value")
