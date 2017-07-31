@@ -16,13 +16,14 @@ import java.util.List;
 
 /**
  * Created by yuxibing on 2017//27.
- * 描述:自定义TextView介绍
+ * 描述:自定义View介绍
  */
 
 public class CustomView extends View {
     private Paint paint;
     private Path path;
     private int radius;
+    private Paint linePaint;
     //方式一:
     /*
     //用于代码中动态创建自定义控件实例
@@ -67,6 +68,12 @@ public class CustomView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setAntiAlias(true);
         path = new Path();
+
+        linePaint = new Paint();
+        linePaint.setColor(Color.BLACK);
+        linePaint.setStrokeWidth(3);
+        linePaint.setAntiAlias(true);
+        linePaint.setTextSize(30);
     }
 
     //用于封装x,y点的坐标
@@ -162,8 +169,28 @@ public class CustomView extends View {
             sweepArcAngle = list.get(i).value / totalValue * 360 - 1;
             path.arcTo(pieRectF, startActAngle, sweepArcAngle);
             canvas.drawPath(path, paint);
+
+            //绘制直线
+            double a = startActAngle + sweepArcAngle / 2;
+            float startX = (float) (radius * Math.cos(Math.toRadians(a)));
+            float startY = (float) (radius * Math.sin(Math.toRadians(a)));
+            float endX = (float) ((radius + 30) * Math.cos(Math.toRadians(a)));
+            float endY = (float) ((radius + 30) * Math.sin(Math.toRadians(a)));
+            canvas.drawLine(startX, startY, endX, endY, linePaint);
+
             startActAngle += sweepArcAngle + 1;
             path.reset();
+            //绘制文本
+            String percent = String.format("%.1f", list.get(i).value / totalValue * 100)+"%";
+            float textWidth = linePaint.measureText(percent);
+            if (startActAngle % 360.0f >= 90.0f && startActAngle % 360.0f <= 270.0f) {
+                canvas.drawText(percent, endX - textWidth, endY, linePaint);
+            } else {
+                canvas.drawText(percent, endX, endY, linePaint);
+            }
+
+
+
         }
     }
 
