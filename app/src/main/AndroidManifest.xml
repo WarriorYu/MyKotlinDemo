@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".javacode.activity.ViewGroupActivity" />
         <activity android:name=".javacode.activity.CustomViewActivity" />
-        <activity android:name=".javacode.activity.CircleMenuActivity"></activity>
+        <activity android:name=".javacode.activity.CircleMenuActivity" />
+        <activity android:name=".javacode.activity.SettingActivity"></activity>
     </application>
 
 </manifest>

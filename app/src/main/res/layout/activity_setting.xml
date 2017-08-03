@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.yuxibing.mykotlindemo.javacode.activity.SettingActivity">
+    <com.example.yuxibing.mykotlindemo.javacode.view.SettingItemView
+        android:id="@+id/st"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:my_background="first"
+        app:is_toggle="true"
+        app:my_title="设置一"
+        />
+    <com.example.yuxibing.mykotlindemo.javacode.view.SettingItemView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:my_background="middle"
+        app:my_title="设置二"
+        />
+    <com.example.yuxibing.mykotlindemo.javacode.view.SettingItemView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:my_background="last"
+        app:my_title="设置三"
+        />
+</LinearLayout>
