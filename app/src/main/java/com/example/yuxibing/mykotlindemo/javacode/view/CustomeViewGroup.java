@@ -1,4 +1,4 @@
-package com.example.yuxibing.mykotlindemo.javacode;
+package com.example.yuxibing.mykotlindemo.javacode.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -48,6 +48,5 @@ public class CustomeViewGroup extends ViewGroup {
             }
             top+=50;
         }
-
     }
 }

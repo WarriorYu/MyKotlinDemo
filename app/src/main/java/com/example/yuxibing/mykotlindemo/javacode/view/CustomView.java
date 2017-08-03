@@ -1,4 +1,4 @@
-package com.example.yuxibing.mykotlindemo.javacode;
+package com.example.yuxibing.mykotlindemo.javacode.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -10,13 +10,18 @@ import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
+import com.example.yuxibing.mykotlindemo.javacode.util.MathUtil;
+import com.example.yuxibing.mykotlindemo.javacode.model.PieEntity;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by yuxibing on 2017//27.
- * 描述:自定义View介绍
+ * 描述:自定义View介绍  饼状图
  */
 
 public class CustomView extends View {
@@ -24,6 +29,9 @@ public class CustomView extends View {
     private Path path;
     private int radius;
     private Paint linePaint;
+    private int position;
+    private RectF touchRectF;
+    private float[] startAngles;
     //方式一:
     /*
     //用于代码中动态创建自定义控件实例
@@ -154,20 +162,25 @@ public class CustomView extends View {
         for (int i = 0; i < list.size(); i++) {
             totalValue += list.get(i).value;
         }
+        startAngles = new float[list.size()];
     }
 
 
     private RectF pieRectF;
-    private float startActAngle;
     private float sweepArcAngle;
 
     private void draPie(Canvas canvas) {
+        float startActAngle = 0;
         paint.setStyle(Paint.Style.FILL);
         for (int i = 0; i < list.size(); i++) {
             paint.setColor(list.get(i).color);
             path.moveTo(0, 0);
             sweepArcAngle = list.get(i).value / totalValue * 360 - 1;
-            path.arcTo(pieRectF, startActAngle, sweepArcAngle);
+            if (position == i) {
+                path.arcTo(touchRectF, startActAngle, sweepArcAngle);
+            } else {
+                path.arcTo(pieRectF, startActAngle, sweepArcAngle);
+            }
             canvas.drawPath(path, paint);
 
             //绘制直线
@@ -177,20 +190,17 @@ public class CustomView extends View {
             float endX = (float) ((radius + 30) * Math.cos(Math.toRadians(a)));
             float endY = (float) ((radius + 30) * Math.sin(Math.toRadians(a)));
             canvas.drawLine(startX, startY, endX, endY, linePaint);
-
+            startAngles[i] = startActAngle;
             startActAngle += sweepArcAngle + 1;
             path.reset();
             //绘制文本
-            String percent = String.format("%.1f", list.get(i).value / totalValue * 100)+"%";
+            String percent = String.format("%.1f", list.get(i).value / totalValue * 100) + "%";
             float textWidth = linePaint.measureText(percent);
             if (startActAngle % 360.0f >= 90.0f && startActAngle % 360.0f <= 270.0f) {
                 canvas.drawText(percent, endX - textWidth, endY, linePaint);
             } else {
                 canvas.drawText(percent, endX, endY, linePaint);
             }
-
-
-
         }
     }
 
@@ -206,5 +216,37 @@ public class CustomView extends View {
         height = h;
         radius = (int) (Math.min(w, h) * 0.7 / 2);
         pieRectF = new RectF(-radius, -radius, radius, radius);
+        touchRectF = new RectF(-radius - 15, -radius - 15, radius + 15, radius + 15);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int action = event.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                float x = event.getX();
+                float y = event.getY();
+                x = x - width / 2;
+                y = y - height / 2;
+                float touchAngle = MathUtil.getTouchAngle(x, y);
+                float touchRadius = (float) Math.sqrt(x * x + y * y);
+                if (touchRadius < radius) {
+                    int searchResult = Arrays.binarySearch(startAngles, touchAngle);
+                    if (searchResult < 0) {
+                        position = -searchResult - 1 - 1;
+                    } else {
+                        position = searchResult;
+                    }
+                    invalidate();
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+
+                break;
+            case MotionEvent.ACTION_CANCEL:
+
+                break;
+        }
+        return super.onTouchEvent(event);
     }
 }

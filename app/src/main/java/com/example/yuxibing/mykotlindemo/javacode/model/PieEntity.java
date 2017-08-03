@@ -1,4 +1,4 @@
-package com.example.yuxibing.mykotlindemo.javacode;
+package com.example.yuxibing.mykotlindemo.javacode.model;
 
 /**
  * Created by yuxibing on 2017/7/28.

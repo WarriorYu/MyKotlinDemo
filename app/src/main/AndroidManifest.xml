@@ -9,14 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".javacode.MainActivity">
+        <activity android:name=".javacode.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".javacode.ViewGroupActivity"></activity>
+        <activity android:name=".javacode.activity.ViewGroupActivity" />
+        <activity android:name=".javacode.activity.CustomViewActivity" />
+        <activity android:name=".javacode.activity.CircleMenuActivity"></activity>
     </application>
 
 </manifest>

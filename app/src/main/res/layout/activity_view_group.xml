@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
   >
-<com.example.yuxibing.mykotlindemo.javacode.CustomeViewGroup
+<com.example.yuxibing.mykotlindemo.javacode.view.CustomeViewGroup
     android:layout_width="match_parent"
-    android:layout_height="match_parent"></com.example.yuxibing.mykotlindemo.javacode.CustomeViewGroup>
+    android:layout_height="match_parent"></com.example.yuxibing.mykotlindemo.javacode.view.CustomeViewGroup>
 
 </android.support.constraint.ConstraintLayout>
