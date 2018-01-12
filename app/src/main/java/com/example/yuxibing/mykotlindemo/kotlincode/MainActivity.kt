@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         for (item in listWithNulls) {
             item?.let {
                 Log.e("空类型", it)
+                Log.e("空类型", it)
             }
         }
     }
