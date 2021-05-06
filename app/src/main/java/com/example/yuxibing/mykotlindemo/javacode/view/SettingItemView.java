@@ -53,6 +53,7 @@ public class SettingItemView extends RelativeLayout {
         }
         textview.setText(title);
         setToggle(isToggle);
+        //解析后释放资源
         typedArray.recycle();
     }
 

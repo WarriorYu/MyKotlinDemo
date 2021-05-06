@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/personal_bg_img"
+        android:maxLevel="0" />
+    <item
+        android:drawable="@drawable/home_mbank_1_clicked"
+        android:maxLevel="1" />
+    <item
+        android:drawable="@drawable/home_mbank_2_clicked"
+        android:maxLevel="5" />
+    <item
+        android:drawable="@drawable/home_mbank_3_clicked"
+        android:maxLevel="10" />
+</level-list>

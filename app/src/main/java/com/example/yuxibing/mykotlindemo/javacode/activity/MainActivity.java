@@ -1,33 +1,79 @@
 package com.example.yuxibing.mykotlindemo.javacode.activity;
 
+import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IInterface;
+import android.os.Messenger;
+import android.os.RemoteCallbackList;
 import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
+import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.Scroller;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.example.yuxibing.mykotlindemo.R;
+import com.example.yuxibing.mykotlindemo.javacode.model.Food;
+import com.example.yuxibing.mykotlindemo.javacode.themedemo.DownLoadThemeService;
+import com.example.yuxibing.mykotlindemo.javacode.view.TTDialog;
 
-public class MainActivity extends AppCompatActivity {
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Logger;
 
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
+
+public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks{
+
+    private TextView img;
+    private GestureDetector gestureDetector;
+    private static final String[] STORAGE_AND_PHONE = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE};
+    private static final int RC_STORAGE_PHONE_PERM = 123;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String a = "1.0";
+//        int i = Integer.parseInt(a);
+        double b = 9.0f;
+        Number num = b;
+        int i = num.intValue();
+        Log.e("aaaaaa", i + "哈哈");
         setTransparentBar(200, 0);
+        img = (TextView) findViewById(R.id.img);
         //饼状图
         findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,10 +103,54 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), SettingActivity.class));
+//                startActivity(new Intent(getApplicationContext(), SettingActivity.class));
+//                ObjectAnimator.ofFloat(img, "translationY", -img.getHeight()).start();
+                /*ValueAnimator colorAnim = ObjectAnimator.ofInt(img, "backgroundColor", *//*Red*//*0xFFFF8080, *//*Blue*//*0xFF8080FF);
+                colorAnim.setDuration(3000);
+                colorAnim.setEvaluator(new ArgbEvaluator());
+                colorAnim.setRepeatCount(ValueAnimator.INFINITE);
+                colorAnim.setRepeatMode(ValueAnimator.REVERSE);
+                colorAnim.start();*/
+                /*AnimatorSet set = new AnimatorSet();
+                set.playTogether(
+                        ObjectAnimator.ofFloat(img, "rotationX", 0, 360),
+                        ObjectAnimator.ofFloat(img, "rotationY", 0, 180),
+                        ObjectAnimator.ofFloat(img, "rotation", 0, -90),
+                        ObjectAnimator.ofFloat(img, "translationX", 0, 90),
+                        ObjectAnimator.ofFloat(img, "translationY", 0, 90),
+                        ObjectAnimator.ofFloat(img, "scaleX", 1, 1.5f),
+                        ObjectAnimator.ofFloat(img, "scaleY", 1, 0.5f),
+                        ObjectAnimator.ofFloat(img, "alpha", 1, 0.25f, 1)
+                );
+                set.setDuration(5 * 1000).start();*/
+//                animate(img).setDuration(2000).rotationYBy(100).x(100).y(100).start();
+                ObjectAnimator animator = ObjectAnimator.ofFloat(img, "translationX", 360);
+                animator.setDuration(1000);
+                animator.start();
+               /* ObjectAnimator animator = ObjectAnimator.ofFloat(img,"rotationX",0,270,0);
+                animator.setDuration(2000);
+                animator.start();*/
+
             }
         });
+        findViewById(R.id.btn4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), MallCategoryActivity.class));
+            }
+        });
+        findViewById(R.id.btn5).setOnClickListener(v -> startActivity(new Intent(this, ArtPracticeActivity.class)));
+
+
+        findViewById(R.id.btn6).setOnClickListener(v -> requestReadWritePermission());
+
+        String[] strings = fileList();
+        for (String filename : strings) {
+            Log.e("文件", filename);
+        }
+
     }
+
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public void setTransparentBar(@ColorInt int color, int alpha) {
@@ -69,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
             View decorView = window.getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            //View.SYSTEM_UI_FLAG_LAYOUT_STABLE：保持整个View稳定, 常和控制System UI悬浮, 隐藏的Flags共用, 使View不会因为System UI的变化而重新layout
             decorView.setSystemUiVisibility(option);
 
             int finalColor = alpha == 0 ? Color.TRANSPARENT :
@@ -168,5 +259,39 @@ public class MainActivity extends AppCompatActivity {
 
         int resourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
         return context.getResources().getDimensionPixelSize(resourceId);
+    }
+
+
+    @AfterPermissionGranted(RC_STORAGE_PHONE_PERM)
+    private void requestReadWritePermission() {
+        if (hasReadWritePermission()) {
+            String themeUrl = "http://guanfu-file.oss-cn-beijing.aliyuncs.com/theme/new_year_190118_online.zip";
+            DownLoadThemeService.startDowloadService(this, themeUrl);
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(this, "需要存储权限", RC_STORAGE_PHONE_PERM, STORAGE_AND_PHONE);
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    private boolean hasReadWritePermission() {
+        return EasyPermissions.hasPermissions(this, STORAGE_AND_PHONE);
+    }
+
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        Log.e("权限", "被禁止");
     }
 }

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transition xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/personal_bg_img" />
+    <item android:drawable="@drawable/home_mbank_3_clicked" />
+</transition>
