@@ -2,7 +2,7 @@ package com.example.yuxibing.mykotlindemo.javacode.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yuxibing.mykotlindemo.R;
 import com.example.yuxibing.mykotlindemo.javacode.view.CustomView;

@@ -1,9 +1,8 @@
 package com.example.yuxibing.mykotlindemo.kotlincode
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.example.yuxibing.mykotlindemo.R
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 

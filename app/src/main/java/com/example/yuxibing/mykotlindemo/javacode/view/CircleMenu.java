@@ -41,8 +41,8 @@ public class CircleMenu extends ViewGroup {
     public void setData(int[] imgs, String[] strs) {
         for (int i = 0; i < imgs.length; i++) {
             View view = View.inflate(getContext(), R.layout.menu_item, null);
-            ImageView img = (ImageView) findViewById(R.id.img);
-            TextView textView = (TextView) findViewById(R.id.text);
+            ImageView img = view.findViewById(R.id.img);
+            TextView textView = view.findViewById(R.id.text);
             img.setImageResource(imgs[i]);
             textView.setText(strs[i]);
             addView(view);
